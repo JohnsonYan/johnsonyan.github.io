@@ -1,0 +1,122 @@
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><title>Go开发环境部署与新手使用指南 | Frank 的博客</title><link href=/images/avator-hacker.png rel="shortcut icon" type=image/x-icon><meta name=author content="Frank"><meta name=description content="在Windows 10系统中安装Go，并配置VS Code
+"><meta name=generator content="Hugo 0.82.0"><link rel=canonical href=https://139.224.214.158/posts/go%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/><meta property="og:title" content="Go开发环境部署与新手使用指南"><meta property="og:description" content="在Windows 10系统中安装Go，并配置VS Code"><meta property="og:type" content="article"><meta property="og:url" content="https://139.224.214.158/posts/go%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><meta property="og:image" content="https://139.224.214.158"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-04-09T22:11:30+08:00"><meta property="article:modified_time" content="2021-04-09T22:11:30+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://139.224.214.158"><meta name=twitter:title content="Go开发环境部署与新手使用指南"><meta name=twitter:description content="在Windows 10系统中安装Go，并配置VS Code"><link rel=stylesheet href=/css/semantic.min.css><link rel=stylesheet href=/css/icomoon.css><link rel=stylesheet href=/css/OverlayScrollbars.min.css><link rel=stylesheet href=/css/github-markdown.css><link rel=stylesheet href=/css/site.css><style>a:not(.ui.button):hover{text-decoration:underline}a:not(.ui.button){color:#2e8b57!important}body.default{background-color:#fff}</style><link rel=stylesheet data-highlight href=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/gruvbox-light.min.css><link rel=stylesheet href=/css/custom.css></head><body class=default><nav class="ui secondary menu dream-menu"><div class=item><i class="large link bullseye icon dream-flip-toggle" title=翻转！></i></div><div class=item><i class="large link home icon" title=首页 onclick="window.location.href='https://139.224.214.158'"></i></div><div class=item><i class="large link search icon" onclick=toggleSearch()></i></div></nav><div class=flip-container><div class=flipper><section class=front><div class=dream-max-width><div class="ui relaxed grid dream-grid dream-grid-single"><aside class="sixteen wide mobile sixteen wide tablet four wide computer column dream-single-aside"><div class="ui segment toc"><nav id=TableOfContents><ul><li><a href=#11-前言>1.1. 前言</a></li><li><a href=#12-开发环境部署>1.2. 开发环境部署</a><ul><li><a href=#121-安装>1.2.1. 安装</a></li><li><a href=#122-go环境变量配置>1.2.2. Go环境变量配置</a></li><li><a href=#123-配置vscode的go语言插件支持>1.2.3. 配置VScode的Go语言插件支持</a></li></ul></li><li><a href=#13-新手如何编写go语言代码>1.3. 新手如何编写Go语言代码</a><ul><li><a href=#131-第一个程序>1.3.1. 第一个程序</a></li><li><a href=#132-从我的模块导入包>1.3.2. 从我的模块导入包</a></li><li><a href=#133-从远程模块导入包>1.3.3. 从远程模块导入包</a></li><li><a href=#134-测试>1.3.4. 测试</a></li></ul></li><li><a href=#14-收工>1.4. 收工</a></li></ul></nav></div><div class="ui segment actions"><button class="ui circular icon button save-as-image" title=保存为图片 onclick=savePostAsImg()>
+<i class="save icon"></i></button>
+<a href="https://twitter.com/intent/tweet?text=Go%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e9%83%a8%e7%bd%b2%e4%b8%8e%e6%96%b0%e6%89%8b%e4%bd%bf%e7%94%a8%e6%8c%87%e5%8d%97&url=https%3a%2f%2f139.224.214.158%2fposts%2fgo%25E5%25BC%2580%25E5%258F%2591%25E7%258E%25AF%25E5%25A2%2583%25E9%2583%25A8%25E7%25BD%25B2%25E4%25B8%258E%25E6%2596%25B0%25E6%2589%258B%25E4%25BD%25BF%25E7%2594%25A8%25E6%258C%2587%25E5%258D%2597%2f" class="ui circular twitter icon button"><i class="twitter icon"></i></a>
+<a href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2f139.224.214.158%2fposts%2fgo%25E5%25BC%2580%25E5%258F%2591%25E7%258E%25AF%25E5%25A2%2583%25E9%2583%25A8%25E7%25BD%25B2%25E4%25B8%258E%25E6%2596%25B0%25E6%2589%258B%25E4%25BD%25BF%25E7%2594%25A8%25E6%258C%2587%25E5%258D%2597%2f" class="ui circular facebook icon button"><i class="facebook icon"></i></a></div></aside><div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single" id=dream-save-post-as-img><section class="ui attached segment"><header><h1 class="ui large header">Go开发环境部署与新手使用指南<div class="sub header">@
+Frank
+|
+星期五，四月 9 日，2021 年
+| 4 分钟阅读
+| 更新于
+星期五，四月 9 日，2021 年</div></h1></header><article class=main><p>在Windows 10系统中安装Go，并配置VS Code</p><h1 id=1-go开发环境部署与新手使用指南>1. Go开发环境部署与新手使用指南</h1><h2 id=11-前言>1.1. 前言</h2><p>本篇blog基于Go语言官方文档给出的安装指南与代码编写指南整理而出，主要参考了以下几篇文章：</p><ul><li><a href=https://golang.org/doc/install>Go语言官方安装文档</a></li><li><a href=https://golang.org/doc/code.html>如何写Go语言代码</a></li></ul><hr><h2 id=12-开发环境部署>1.2. 开发环境部署</h2><h3 id=121-安装>1.2.1. 安装</h3><p>我准备在我的Windows 10系统中安装Go，所以，首先从Go官网下载Windows版<a href=https://dl.google.com/go/go1.14.6.windows-amd64.msi>安装程序</a></p><p>安装完毕后，编写个HelloWorld程序简单测试一下是否安装成功，新建文件<code>hello.go</code>，输入以下代码</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;hello, world\n&#34;</span>)
+}
+</code></pre></div><p>然后，使用go命令编译该程序</p><pre><code>&gt; go build hello.go
+</code></pre><p>执行在当前目录下编译出来的hello.exe程序，执行成功则表示Go语言安装成功</p><pre><code>&gt; .\hello.exe
+hello, world
+</code></pre><hr><h3 id=122-go环境变量配置>1.2.2. Go环境变量配置</h3><p>设置<code>GOPATH</code>环境变量，该变量指向我们平时编写Go语言程序的常用工作路径</p><pre><code>&gt; go env -w GOPATH=D:\code\Go
+</code></pre><p>设置<code>GO111MODULE</code>环境变量，打开GoMod功能，再配置七牛云提供的Go代理服务，让我们更顺利地下载Go的库</p><pre><code>&gt; go env -w GO111MODULE=on
+&gt; go env -w GOPROXY=https://goproxy.cn,direct
+</code></pre><p>最后，设置<code>GOBIN</code>环境变量，我们使用go install的时候，会把编译出来的可执行程序都放到这里来</p><pre><code>&gt; go env -w GOBIN=D:\code\Go\bin
+</code></pre><hr><h3 id=123-配置vscode的go语言插件支持>1.2.3. 配置VScode的Go语言插件支持</h3><p>使用VScode打开刚才编写的hello.go文件，右下角会自动弹出安装Go相关插件的弹窗，点击<code>Install</code>即可安装</p><p>Go插件安装完毕后，再次打开hello.go，会弹窗提示我们安装<code>go-outline</code>等插件，大概有十多个，点击<code>Install all</code>来安装全部</p><p>如果没有配置<code>GOPROXY</code>环境变量来设置Go的代理，这里的插件大概率是无法安装成功的，由于我们在上一步已经设置了代理，所以这里应该会直接安装成功</p><hr><h2 id=13-新手如何编写go语言代码>1.3. 新手如何编写Go语言代码</h2><p>在平时写代码时就考虑到包的组织结构，好像我们总有一天要发布代码一样，这是一个良好的习惯，Go语言官方文档也推荐我们这样做。接下来就通过简单的例子来了解一下如何用一种良好的习惯来写Go语言代码</p><h3 id=131-第一个程序>1.3.1. 第一个程序</h3><p>要编写并运行一个简单的程序，首先为模块选择一个路径（本例中选择<code>example.com/user/hello</code>），并创建一个<code>go.mod</code>来声明它</p><pre><code>&gt; mkdir hello
+&gt; cd hello
+&gt; go mod init example.com/user/hello
+go: creating new go.mod: module example.com/user/hello
+&gt; cat go.mod
+module example.com/user/hello
+
+go 1.14
+</code></pre><p>go源文件第一行必须是<code>package name</code>，可执行程序则必须使用<code>package main</code>，同一个目录下，只能有一个main</p><p>接下来，在当前目录中创建一个名为<code>hello.go</code>的文件，文件内容如下</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Hello, world.&#34;</span>)
+}
+</code></pre></div><p>接下来，我们可以编译并安装该go程序了，执行以下命令</p><pre><code>&gt; go install example.com/user/hello
+</code></pre><p>该命令会在我们之前设置的环境变量<code>GOBIN</code>指定目录下，生成二进制程序hello.exe</p><pre><code>&gt; cd D:\code\Go\bin
+&gt; .\hello.exe
+Hello, world.
+</code></pre><hr><h3 id=132-从我的模块导入包>1.3.2. 从我的模块导入包</h3><p>接下来，编写一个<code>morestrings</code>包并在<code>hello</code>程序中使用它。首先，在hello目录下新建一个文件夹<code>morestrings</code>，以及一个名为<code>reverse.go</code>的文件，文件内容如下</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// Package morestrings implements additional functions to manipulate UTF-8
+</span><span style=color:#75715e>// encoded strings, beyond what is provided in the standard &#34;strings&#34; package.
+</span><span style=color:#75715e></span><span style=color:#f92672>package</span> <span style=color:#a6e22e>morestrings</span>
+
+<span style=color:#75715e>// ReverseRunes returns its argument string reversed rune-wise left to right.
+</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>ReverseRunes</span>(<span style=color:#a6e22e>s</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>string</span> {
+	<span style=color:#a6e22e>r</span> <span style=color:#f92672>:=</span> []rune(<span style=color:#a6e22e>s</span>)
+	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>, len(<span style=color:#a6e22e>r</span>)<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> &lt; len(<span style=color:#a6e22e>r</span>)<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>; <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> = <span style=color:#a6e22e>i</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#a6e22e>j</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> {
+		<span style=color:#a6e22e>r</span>[<span style=color:#a6e22e>i</span>], <span style=color:#a6e22e>r</span>[<span style=color:#a6e22e>j</span>] = <span style=color:#a6e22e>r</span>[<span style=color:#a6e22e>j</span>], <span style=color:#a6e22e>r</span>[<span style=color:#a6e22e>i</span>]
+	}
+	<span style=color:#66d9ef>return</span> string(<span style=color:#a6e22e>r</span>)
+}
+</code></pre></div><p><code>reverse.go</code>文件中，ReverseRunes首字母大写，表示该函数被导出，可以在其它导入了我们的morestrings包的程序中调用</p><p>接下载，修改<code>hello.go</code>的代码，在程序中调用刚才编写的包</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> (
+	<span style=color:#e6db74>&#34;fmt&#34;</span>
+
+	<span style=color:#e6db74>&#34;example.com/user/hello/morestrings&#34;</span>
+)
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>morestrings</span>.<span style=color:#a6e22e>ReverseRunes</span>(<span style=color:#e6db74>&#34;Hello, world, reverse me.&#34;</span>))
+}
+</code></pre></div><p>安装hello程序</p><pre><code>&gt; go install example.com/user/hello
+</code></pre><p>运行该程序，可以看到如下输出</p><pre><code>&gt; .\hello.exe
+.em esrever ,dlrow ,olleH
+</code></pre><hr><h3 id=133-从远程模块导入包>1.3.3. 从远程模块导入包</h3><p><code>import</code>包路径可以描述如何使用版本控制系统（例如Git或Mercurial）获取软件包源代码。 go工具使用此属性来自动从远程存储库获取软件包。这里，我们将要在程序中import github.com/google/go-cmp/cmp</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+
+<span style=color:#f92672>import</span> (
+	<span style=color:#e6db74>&#34;fmt&#34;</span>
+
+	<span style=color:#e6db74>&#34;example.com/user/hello/morestrings&#34;</span>
+	<span style=color:#e6db74>&#34;github.com/google/go-cmp/cmp&#34;</span>
+)
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>morestrings</span>.<span style=color:#a6e22e>ReverseRunes</span>(<span style=color:#e6db74>&#34;Hello, world, reverse me.&#34;</span>))
+	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>cmp</span>.<span style=color:#a6e22e>Diff</span>(<span style=color:#e6db74>&#34;Hello World&#34;</span>, <span style=color:#e6db74>&#34;Hello Go&#34;</span>))
+}
+</code></pre></div><p>当执行命令如<code>go install</code>、<code>go build</code>、<code>go run</code>，go会自动下载远程模块，并在<code>go.mod</code>中记录其版本号</p><pre><code>&gt; go install example.com/user/hello
+&gt; .\hello.exe
+.em esrever ,dlrow ,olleH
+  string(
+-       &quot;Hello World&quot;,
++       &quot;Hello Go&quot;,
+  )
+
+&gt; cat go.mod
+module example.com/user/hello
+
+go 1.14
+
+require github.com/google/go-cmp v0.5.0
+</code></pre><hr><h3 id=134-测试>1.3.4. 测试</h3><p>go有一个由<code>go test</code>命令和<code>testing</code>包组成的轻量级测试框架</p><p>可以通过创建一个已 <code>_test.go</code> 结尾的测试文件，测试文件中包含函数名为 <code>TestXXX</code> 并且参数包含 <code>func (t *testing.T)</code> 。测试框架会为每一个这样的函数运行测试。如果函数调用了失败函数如 <code>t.Error</code> 或 <code>t.Fail</code> ，测试会被认定为未通过/失败</p><p>让我们为morestrings包创建一个测试，在morestrings目录下新建测试文件<code>reverse_test.go</code>，包含如下代码</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>morestrings</span>
+
+<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;testing&#34;</span>
+
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestReverseRunes</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+	<span style=color:#a6e22e>cases</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>struct</span> {
+		<span style=color:#a6e22e>in</span>, <span style=color:#a6e22e>want</span> <span style=color:#66d9ef>string</span>
+	}{
+		{<span style=color:#e6db74>&#34;Hello, world&#34;</span>, <span style=color:#e6db74>&#34;dlrow ,olleH&#34;</span>},
+		{<span style=color:#e6db74>&#34;Hello, 世界&#34;</span>, <span style=color:#e6db74>&#34;界世 ,olleH&#34;</span>},
+		{<span style=color:#e6db74>&#34;&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>},
+	}
+	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>cases</span> {
+		<span style=color:#a6e22e>got</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ReverseRunes</span>(<span style=color:#a6e22e>c</span>.<span style=color:#a6e22e>in</span>)
+		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>got</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>c</span>.<span style=color:#a6e22e>want</span> {
+			<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;ReverseRunes(%q) == %q, want %q&#34;</span>, <span style=color:#a6e22e>c</span>.<span style=color:#a6e22e>in</span>, <span style=color:#a6e22e>got</span>, <span style=color:#a6e22e>c</span>.<span style=color:#a6e22e>want</span>)
+		}
+	}
+}
+</code></pre></div><p>执行以下命令来运行自动化测试程序</p><pre><code>&gt; go test
+PASS
+ok      example.com/user/hello/morestrings      0.167s
+</code></pre><hr><h2 id=14-收工>1.4. 收工</h2><p>写这篇文章的目的是最近在学习Go语言，新电脑也需要搭建Go相关环境，于是就整理了一下安装过程中的操作，以备日后使用。</p><p>同时也希望这篇文章能够带初学Go语言的朋友些许帮助，Thanks</p></article></section><article class="ui segment utterances-comments" data-html2canvas-ignore><script src=https://utteranc.es/client.js repo=JohnsonYan/blogdiscuss issue-term=og:title theme=github-light crossorigin=anonymous async></script></article></div></div><footer class="ui basic center aligned segment" style=background-color:initial><p>© 2021 Frank 的博客</p><p>Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> with theme <a href=https://github.com/g1eny0ung/hugo-theme-dream target=_blank>Dream</a>.</p></footer></div></section><section class=back><div class=dream-max-width><header class="ui basic very padded segment dream-header"><div class="ui small circular image"><img src=/images/avator-hacker.png alt=avatar></div><div class=content><h1 class="ui medium header">Frank 的博客<div class="sub header">生与理想， 死于欲望。</div></h1><article class="ui horizontal list"><a class=item href=/posts><i class="archive icon" title=归档></i></a>
+<a class=item href=/categories><i class="th list icon" title=所有分类></i></a>
+<a class=item href=/tags><i class="tags icon" title=所有标签></i></a></article><article class=dream-tags><a class="ui label" href=/tags/go/ title=Go>Go</a>
+<a class="ui label" href=/tags/%E7%BC%96%E7%A8%8B/ title=编程>编程</a></article></div></header><div class="ui relaxed grid dream-grid dream-back"><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment markdown-body"><div class="ui medium header">About Me</div></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment"><div class="ui medium header">社交链接</div><nav class="ui secondary menu dream-menu dream-socials"><div class=item><a href=/index.xml><i class="large rss square icon" title=RSS></i></a></div></nav></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"></div></div></div></section></div></div><script>window.defaultDark=null,window.backgroundDark=null,window.backgroundImageDark=null,window.darkNav=null,window.hasTwitterEmbed=null,window.hasTwitterEmbed&&(window.twttr=function(c,d,e){var b,f=c.getElementsByTagName(d)[0],a=window.twttr||{};return c.getElementById(e)?a:(b=c.createElement(d),b.id=e,b.src='https://platform.twitter.com/widgets.js',f.parentNode.insertBefore(b,f),a._e=[],a.ready=function(b){a._e.push(b)},a)}(document,'script','twitter-wjs'))</script><script src=/js/jquery.min.js></script><script src=/js/semantic.min.js></script><script src=/js/jquery.overlayScrollbars.min.js></script><script src=/js/header.js></script><script src=/js/main.js></script><script src=/js/theme.js></script><script src=/js/html2canvas.min.js></script><script src=/js/post.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/ocaml.min.js></script><script>hljs.initHighlightingOnLoad(),setHighlightTheme();function setHighlightTheme(){var a=localStore.getItem('hugo-theme-dream-is-dark'),b,c,d;a=a?a:window.defaultDark?'y':a,b="gruvbox-light",c="gruvbox-dark",d=a==='y'?c:b,$('link[data-highlight]').attr('href','https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/'+d+'.min.css'),$('pre').css('background',a==='y'?'#333':'')}</script><div class="ui inverted segment" id=dream-search><div class="ui search"><div class="ui transparent input"><input class=prompt type=text placeholder=搜索></div><div class=results></div></div></div><script>$(document).ready(function(){$.getJSON('https://139.224.214.158/index.json',function(a){$('.ui.search').search({source:a,searchFields:['title'],showNoResults:!0})})})</script><script src=/js/search.js></script></body></html>
