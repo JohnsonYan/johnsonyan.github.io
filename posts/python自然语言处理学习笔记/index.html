@@ -1,0 +1,149 @@
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><title>Python自然语言处理学习笔记 | Frank 的博客</title><link href=/images/avator-hacker.png rel="shortcut icon" type=image/x-icon><meta name=author content="Frank"><meta name=description content="学习用Python处理自然语言,公司51job-cto网课学习记录。
+"><meta name=generator content="Hugo 0.82.1"><link rel=canonical href=https://johnsonyan.github.io/posts/python%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/><meta property="og:title" content="Python自然语言处理学习笔记"><meta property="og:description" content="学习用Python处理自然语言,公司51job-cto网课学习记录。"><meta property="og:type" content="article"><meta property="og:url" content="https://johnsonyan.github.io/posts/python%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><meta property="og:image" content="https://johnsonyan.github.io"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-04-28T17:14:45+08:00"><meta property="article:modified_time" content="2021-04-28T17:14:45+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://johnsonyan.github.io"><meta name=twitter:title content="Python自然语言处理学习笔记"><meta name=twitter:description content="学习用Python处理自然语言,公司51job-cto网课学习记录。"><link rel=stylesheet href=/css/semantic.min.css><link rel=stylesheet href=/css/icomoon.css><link rel=stylesheet href=/css/OverlayScrollbars.min.css><link rel=stylesheet href=/css/github-markdown.css><link rel=stylesheet href=/css/site.css><style>a:not(.ui.button):hover{text-decoration:underline}a:not(.ui.button){color:#2e8b57!important}body.default{background-color:#fff}</style><link rel=stylesheet data-highlight href=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/gruvbox-light.min.css><link rel=stylesheet href=/css/custom.css></head><body class=default><nav class="ui secondary menu dream-menu"><div class=item><i class="large link bullseye icon dream-flip-toggle" title=翻转！></i></div><div class=item><i class="large link home icon" title=首页 onclick="window.location.href='https://johnsonyan.github.io'"></i></div><div class=item><i class="large link search icon" onclick=toggleSearch()></i></div></nav><div class=flip-container><div class=flipper><section class=front><div class=dream-max-width><div class="ui relaxed grid dream-grid dream-grid-single"><aside class="sixteen wide mobile sixteen wide tablet four wide computer column dream-single-aside"><div class="ui segment toc"><nav id=TableOfContents><ul><li><a href=#11-安装nltk>1.1. 安装nltk</a></li><li><a href=#12-常用函数>1.2. 常用函数</a></li><li><a href=#13-简单的统计>1.3. 简单的统计</a></li><li><a href=#14-细粒度划分>1.4. 细粒度划分</a></li><li><a href=#15-细粒度划分的条件>1.5. 细粒度划分的条件</a></li></ul><ul><li><a href=#21-语料库操作相关函数>2.1. 语料库操作相关函数</a></li><li><a href=#22-长用语料库介绍>2.2. 长用语料库介绍</a></li><li><a href=#23-导入自己的语料库>2.3. 导入自己的语料库</a></li><li><a href=#24-简单的条件频率分布与图表绘制>2.4. 简单的条件频率分布与图表绘制</a></li></ul><ul><li><a href=#31-网络读取文件处理html>3.1. 网络读取文件处理HTML</a></li><li><a href=#32-对搜索引擎与rss订阅的处理>3.2. 对搜索引擎与RSS订阅的处理</a></li><li><a href=#33-后续内容施工中>3.3. 后续内容施工中&mldr;</a></li></ul></nav></div><div class="ui segment actions"><button class="ui circular icon button save-as-image" title=保存为图片 onclick=savePostAsImg()>
+<i class="save icon"></i></button>
+<a href="https://twitter.com/intent/tweet?text=Python%e8%87%aa%e7%84%b6%e8%af%ad%e8%a8%80%e5%a4%84%e7%90%86%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0&url=https%3a%2f%2fjohnsonyan.github.io%2fposts%2fpython%25E8%2587%25AA%25E7%2584%25B6%25E8%25AF%25AD%25E8%25A8%2580%25E5%25A4%2584%25E7%2590%2586%25E5%25AD%25A6%25E4%25B9%25A0%25E7%25AC%2594%25E8%25AE%25B0%2f" class="ui circular twitter icon button"><i class="twitter icon"></i></a>
+<a href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjohnsonyan.github.io%2fposts%2fpython%25E8%2587%25AA%25E7%2584%25B6%25E8%25AF%25AD%25E8%25A8%2580%25E5%25A4%2584%25E7%2590%2586%25E5%25AD%25A6%25E4%25B9%25A0%25E7%25AC%2594%25E8%25AE%25B0%2f" class="ui circular facebook icon button"><i class="facebook icon"></i></a></div></aside><div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single" id=dream-save-post-as-img><div class="ui top attached segment cover"><div class=cover-img style=background-image:url(/img/cover.jpg)></div></div><section class="ui attached segment"><header><h1 class="ui large header">Python自然语言处理学习笔记<div class="sub header">@
+Frank
+|
+星期三，四月 28 日，2021 年
+| 6 分钟阅读
+| 更新于
+星期三，四月 28 日，2021 年</div></h1></header><article class=main><p>学习用Python处理自然语言,公司51job-cto网课学习记录。</p><h1 id=1-用python处理自然语言>1. 用Python处理自然语言</h1><h2 id=11-安装nltk>1.1. 安装nltk</h2><p>nltk是一个基于Python的自然语言处理工具集，主要用于英文的自然语言处理。</p><blockquote><p>nltk为超过50个语料库和词汇资源(如WordNet)提供易于使用的接口，以及一套用于分类、标记化、词干化、标记、解析和语义推理的文本处理库，用于工业级NLP库的包装器，以及一个活跃的讨论论坛。</p></blockquote><ol><li>创建用于学习nlp的python虚拟环境</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ cd ~
+$ mkdir venv
+$ cd venv
+$ python3 -m venv nlp
+$ source nlp/bin/activate
+</code></pre></div><ol start=2><li>安装nltk<br>我这里使用了豆瓣源来加速安装过程</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ pip install nltk -i https://pypi.douban.com/simple
+</code></pre></div><ol start=3><li>验证并下载nltk_data</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ python
+import nltk
+nltk.download<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;all&#39;</span><span style=color:#f92672>)</span>
+</code></pre></div><p>下载nltk_data对外网环境有一定要求，有条件的同学可以挂代理下载，我是通过proxychains来对Python解释器进行的代理。</p><h2 id=12-常用函数>1.2. 常用函数</h2><ul><li><p><code>concordance("china")</code> 查找文本中的一个词汇，并且显示这个词汇的上下文。减少我们的统计工作。这是一个忽略大小写的查询。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>from</span> nltk.book <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
+<span style=color:#f92672>***</span> Introductory Examples <span style=color:#66d9ef>for</span> the NLTK Book <span style=color:#f92672>***</span>
+Loading text1, <span style=color:#f92672>...</span>, text9 <span style=color:#f92672>and</span> sent1, <span style=color:#f92672>...</span>, sent9
+Type the name of the text <span style=color:#f92672>or</span> sentence to view it<span style=color:#f92672>.</span>
+Type: <span style=color:#e6db74>&#39;texts()&#39;</span> <span style=color:#f92672>or</span> <span style=color:#e6db74>&#39;sents()&#39;</span> to list the materials<span style=color:#f92672>.</span>
+text1: Moby Dick by Herman Melville <span style=color:#ae81ff>1851</span>
+text2: Sense <span style=color:#f92672>and</span> Sensibility by Jane Austen <span style=color:#ae81ff>1811</span>
+<span style=color:#f92672>......</span>
+
+<span style=color:#f92672>&gt;&gt;&gt;</span> text1<span style=color:#f92672>.</span>concordance(<span style=color:#e6db74>&#34;china&#34;</span>)
+Displaying <span style=color:#ae81ff>9</span> of <span style=color:#ae81ff>9</span> matches:
+king over the bulwarks of ships <span style=color:#f92672>from</span> China ; some high aloft <span style=color:#f92672>in</span> the rigging , a
+h it overwhelmed all the millions <span style=color:#f92672>in</span> China <span style=color:#f92672>.</span> He lives on the sea , <span style=color:#66d9ef>as</span> prairie c
+<span style=color:#f92672>......</span>
+</code></pre></div></li><li><p><code>similar("china")</code> 查找一个词汇的上下文结构相同的词汇。耗时较长，concordance只是做了一部分查询工作，similar函数首先要查询，然后进行上下文分析，然后在查询与上下文结构相似的词汇。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> text1<span style=color:#f92672>.</span>similar(<span style=color:#e6db74>&#34;china&#34;</span>)
+the him oriental <span style=color:#f92672>and</span> all hand out which <span style=color:#66d9ef>for</span> case thee there deep length us me life head above greenland
+</code></pre></div></li><li><p><code>common_contexts(["china", "is"])</code> 查找两个词汇的上下文结构相似的词汇。我们需要寻找的是一个句子里的两个词汇。在一定程度上能够表达感情色彩。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> text2<span style=color:#f92672>.</span>common_contexts([<span style=color:#e6db74>&#34;monstrous&#34;</span>,<span style=color:#e6db74>&#34;very&#34;</span>])
+am_glad a_pretty a_lucky is_pretty be_glad
+</code></pre></div></li><li><p><code>len()</code> Python内置函数，查询文本中的词汇数量。</p></li><li><p><code>set()</code> Python内置函数，可以将文本转化成集合的形式。(分词，是为了将一句话或者一段文章分成一个接一个的词汇，有利于词性标记。便于自然语言处理。不可以重复的，set的长度就是这个文本的词汇量。)</p></li><li><p><code>sorted()</code> 排序。由于自然语言处理基于大量的数据文本，为了提升性能，我们可以先将结果集进行排序，然后再汇总。例如，在hadoop和map-reduce中，map 与 reduce 之间还存在一个 可选的操作过程，即排序过程。如果数据量过大的话，我们可以加入排序，减少reduce(汇总)的时间，提升整体的效率。)</p></li><li><p><code>count()</code> 查找一个词汇在文本中出现的次数。(去除无用词汇，去除高频词汇，am is are what where，但是这些词汇不能够代表我的中心大意。去除超低频词汇，出现频率一次的词汇，去除这些无用词汇后，能够大大的提升我们的分析效率，减少我们的分析量，而且能够在一定成度上帮我们排除了干扰词汇，保障了我们准确的分析文章主旨大意。)</p></li><li><p><code>index()</code> 查询一个词汇首次在文本中出现的位置。</p></li></ul><h2 id=13-简单的统计>1.3. 简单的统计</h2><ul><li><p><code>FreqDist(text1)</code> 查询当前文档中所有词汇的出现频率。</p></li><li><p><code>hapaxes()</code> 这个方法的调用，是基于FreqDist进行调用。查询文本中出现一次的超低频词汇。</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> fq <span style=color:#f92672>=</span> nltk<span style=color:#f92672>.</span>FreqDist(text1)
+<span style=color:#f92672>&gt;&gt;&gt;</span> fq
+FreqDist({<span style=color:#e6db74>&#39;,&#39;</span>: <span style=color:#ae81ff>18713</span>, <span style=color:#e6db74>&#39;the&#39;</span>: <span style=color:#ae81ff>13721</span>, <span style=color:#e6db74>&#39;.&#39;</span>: <span style=color:#ae81ff>6862</span>, <span style=color:#e6db74>&#39;of&#39;</span>: <span style=color:#ae81ff>6536</span>, <span style=color:#e6db74>&#39;and&#39;</span>: <span style=color:#ae81ff>6024</span>, <span style=color:#e6db74>&#39;a&#39;</span>: <span style=color:#ae81ff>4569</span>, <span style=color:#e6db74>&#39;to&#39;</span>: <span style=color:#ae81ff>4542</span>, <span style=color:#e6db74>&#39;;&#39;</span>: <span style=color:#ae81ff>4072</span>, <span style=color:#e6db74>&#39;in&#39;</span>: <span style=color:#ae81ff>3916</span>, <span style=color:#e6db74>&#39;that&#39;</span>: <span style=color:#ae81ff>2982</span>, <span style=color:#f92672>...</span>})
+<span style=color:#f92672>&gt;&gt;&gt;</span> hp <span style=color:#f92672>=</span> fq<span style=color:#f92672>.</span>hapaxes()
+<span style=color:#f92672>&gt;&gt;&gt;</span> hp[:<span style=color:#ae81ff>10</span>]
+[<span style=color:#e6db74>&#39;Herman&#39;</span>, <span style=color:#e6db74>&#39;Melville&#39;</span>, <span style=color:#e6db74>&#39;]&#39;</span>, <span style=color:#e6db74>&#39;ETYMOLOGY&#39;</span>, <span style=color:#e6db74>&#39;Late&#39;</span>, <span style=color:#e6db74>&#39;Consumptive&#39;</span>, <span style=color:#e6db74>&#39;School&#39;</span>, <span style=color:#e6db74>&#39;threadbare&#39;</span>, <span style=color:#e6db74>&#39;lexicons&#39;</span>, <span style=color:#e6db74>&#39;mockingly&#39;</span>]
+<span style=color:#f92672>&gt;&gt;&gt;</span>
+</code></pre></div><p>通过两个方法的结合使用，我们可以排除大部分的无需参考的词汇，有助于减少我们的分析量，很好地帮助我们排除了干扰词汇，更好的去寻找文章的中心主旨。</p><h2 id=14-细粒度划分>1.4. 细粒度划分</h2><p>细粒度划分是将剩余的重要词汇进行细粒度选择。</p><ol><li>条件划分
+[w for w in v if condition]</li><li>双连词查询
+text1.collocations()：查找双连词，是为了我们进行分词和词性标记的时候，能够准确的标记我们的双连词，red wine的例子。</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> text1<span style=color:#f92672>.</span>collocations()
+Sperm Whale; Moby Dick; White Whale; old man; Captain Ahab; sperm
+whale; Right Whale; Captain Peleg; New Bedford; Cape Horn; cried Ahab;
+years ago; lower jaw; never mind; Father Mapple; cried Stubb; chief
+mate; white whale; ivory leg; one hand
+<span style=color:#f92672>&gt;&gt;&gt;</span> v <span style=color:#f92672>=</span> set(text1)
+<span style=color:#f92672>&gt;&gt;&gt;</span> word <span style=color:#f92672>=</span> [w <span style=color:#66d9ef>for</span> w <span style=color:#f92672>in</span> v <span style=color:#66d9ef>if</span> len(w) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>15</span>]
+<span style=color:#f92672>&gt;&gt;&gt;</span> word
+[<span style=color:#e6db74>&#39;superstitiousness&#39;</span>, <span style=color:#e6db74>&#39;uncompromisedness&#39;</span>, <span style=color:#e6db74>&#39;supernaturalness&#39;</span>, <span style=color:#e6db74>&#39;hermaphroditical&#39;</span>, <span style=color:#e6db74>&#39;apprehensiveness&#39;</span>, <span style=color:#e6db74>&#39;cannibalistically&#39;</span>, <span style=color:#e6db74>&#39;irresistibleness&#39;</span>, <span style=color:#e6db74>&#39;uncomfortableness&#39;</span>, <span style=color:#e6db74>&#39;characteristically&#39;</span>, <span style=color:#e6db74>&#39;undiscriminating&#39;</span>, <span style=color:#e6db74>&#39;subterraneousness&#39;</span>, <span style=color:#e6db74>&#39;Physiognomically&#39;</span>, <span style=color:#e6db74>&#39;responsibilities&#39;</span>, <span style=color:#e6db74>&#39;physiognomically&#39;</span>, <span style=color:#e6db74>&#39;simultaneousness&#39;</span>, <span style=color:#e6db74>&#39;circumnavigating&#39;</span>, <span style=color:#e6db74>&#39;preternaturalness&#39;</span>, <span style=color:#e6db74>&#39;circumnavigation&#39;</span>, <span style=color:#e6db74>&#39;circumnavigations&#39;</span>, <span style=color:#e6db74>&#39;indispensableness&#39;</span>, <span style=color:#e6db74>&#39;uninterpenetratingly&#39;</span>, <span style=color:#e6db74>&#39;CIRCUMNAVIGATION&#39;</span>, <span style=color:#e6db74>&#39;comprehensiveness&#39;</span>, <span style=color:#e6db74>&#39;indiscriminately&#39;</span>]
+<span style=color:#f92672>&gt;&gt;&gt;</span>
+</code></pre></div><h2 id=15-细粒度划分的条件>1.5. 细粒度划分的条件</h2><ul><li>运算符：<ul><li>></li><li>&lt;</li><li>==</li><li>>=</li><li>&lt;=</li><li>!=</li></ul></li><li>字母的控制：<ul><li>startswith() 以什么开头</li><li>endswith() 以什么结尾(过去式多数是以ed结尾的单词)</li><li>islower() 小写</li><li>isupper() 大写(专有名词，可以进行检索)</li><li>istitle() 查询所有首字母大写的词汇。</li><li>isdigit() 只有数字的词汇。</li><li>isalpha() 只有字母的词汇</li></ul></li></ul><h1 id=2-获取文本语料和词汇资源>2. 获取文本语料和词汇资源</h1><h2 id=21-语料库操作相关函数>2.1. 语料库操作相关函数</h2><p>为了操作文本语料和词汇资源，介绍nltk语料库相关函数的使用。</p><ul><li>fileids() 获取语料库中的文件。</li><li>categories() 获取语料库中的分类。</li><li>fileids([categories]) 获取语料库中的分类</li><li>categories(()[fileids]) 查询这些文件对应的分类</li><li>raw() 获取语料库中的原始内容。</li><li>raw(fileids=[f1,f2,f3]) 获取了指定文件的原始内容，f1，f2，f3</li><li>raw(categories=[c1,c2]) 获取指定分类的原始内容</li><li>words() 获取整个语料库中的词汇。</li><li>words(fileids=[f1,f2,f3]) 指定文件中的所有词汇f1,f2,f3</li><li>words(categories=[c1,c2]) 获取指定分类的所有词汇</li><li>sents()：获取语料库中的 句子</li><li>sents(fileids=[f1,f2,f3]) 获取指定文件中的句子</li><li>sents(categories=[c1,c2]) 获取指定分类中的句子</li><li>abspath(fileid) 获取指定文件在磁盘上的位置</li><li>encoding(fileid) 对指定文件进行编码。</li><li>open(fileid) 打开指定文件。</li><li>root() 获取到本地安装的语料库的根目录的路径。</li></ul><h2 id=22-长用语料库介绍>2.2. 长用语料库介绍</h2><ul><li><p>古腾堡语料库：gutenberg</p><p>由古典名著组成，天文类占了较大部分</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> gutenberg
+
+<span style=color:#66d9ef>for</span> fileid <span style=color:#f92672>in</span> gutenberg<span style=color:#f92672>.</span>fileids():
+    num_char <span style=color:#f92672>=</span> len(gutenberg<span style=color:#f92672>.</span>raw(fileid))
+    num_words <span style=color:#f92672>=</span> len(gutenberg<span style=color:#f92672>.</span>words(fileid))
+    num_sents <span style=color:#f92672>=</span> len(gutenberg<span style=color:#f92672>.</span>sents(fileid))
+    num_qc <span style=color:#f92672>=</span> len(set(w<span style=color:#f92672>.</span>lower() <span style=color:#66d9ef>for</span> w <span style=color:#f92672>in</span> gutenberg<span style=color:#f92672>.</span>words(fileid)))
+
+    <span style=color:#66d9ef>print</span>(int(num_char<span style=color:#f92672>/</span>num_words), int(num_words<span style=color:#f92672>/</span>num_sents), int(num_words<span style=color:#f92672>/</span>num_qc), fileid)
+</code></pre></div></li><li><p>网络与聊天文本库：webtext</p><p>从网络论坛汇总而成，包含了网络聊天的语料，比如you在网络聊天中常用u来代替，这就需要用专门的预料库来分析，否则容易偏离方向。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> webtext
+
+<span style=color:#66d9ef>for</span> f <span style=color:#f92672>in</span> webtext<span style=color:#f92672>.</span>fileids():
+    <span style=color:#66d9ef>print</span>(f)
+
+<span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> nps_chat
+
+chatroom <span style=color:#f92672>=</span> nps_chat<span style=color:#f92672>.</span>posts(<span style=color:#e6db74>&#34;10-19-20s_706posts.xml&#34;</span>)
+chatroom[<span style=color:#ae81ff>123</span>]
+</code></pre></div></li><li><p>布朗语料库：brown</p><p>涵盖内容十分广泛且全面，泛用性较好。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># 布朗语料库</span>
+<span style=color:#f92672>import</span> nltk
+<span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> brown
+<span style=color:#f92672>from</span> nltk.inference.tableau <span style=color:#f92672>import</span> Categories
+brown<span style=color:#f92672>.</span>categories()
+
+brown<span style=color:#f92672>.</span>words(categories<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;news&#39;</span>])
+
+brown<span style=color:#f92672>.</span>words(fileids<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;ck09&#39;</span>])
+
+<span style=color:#75715e># 想要得到三种分类里的句子 news reviews editorial</span>
+brown<span style=color:#f92672>.</span>sents(categories<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;news&#39;</span>, <span style=color:#e6db74>&#39;reviews&#39;</span>, <span style=color:#e6db74>&#39;editorial&#39;</span>])
+
+<span style=color:#75715e># 实验1： 分类统计 新闻类 的文本中 一些词汇的出现频率</span>
+news_text <span style=color:#f92672>=</span> brown<span style=color:#f92672>.</span>words(categories<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;news&#39;</span>])
+f <span style=color:#f92672>=</span> nltk<span style=color:#f92672>.</span>FreqDist([w<span style=color:#f92672>.</span>lower() <span style=color:#66d9ef>for</span> w <span style=color:#f92672>in</span> news_text])
+models <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;can&#39;</span>, <span style=color:#e6db74>&#39;could&#39;</span>, <span style=color:#e6db74>&#39;must&#39;</span>, <span style=color:#e6db74>&#39;will&#39;</span>, <span style=color:#e6db74>&#39;may&#39;</span>]
+<span style=color:#66d9ef>for</span> m <span style=color:#f92672>in</span> models:
+    <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;{0} : {1}&#34;</span><span style=color:#f92672>.</span>format(m, f[m]))
+
+<span style=color:#75715e># 实验2： 分类统计 四种类型的文本中</span>
+<span style=color:#75715e># news hobbies humor romance</span>
+
+
+cfd <span style=color:#f92672>=</span> nltk<span style=color:#f92672>.</span>ConditionalFreqDist(
+    (categ, word)
+    <span style=color:#66d9ef>for</span> categ <span style=color:#f92672>in</span> brown<span style=color:#f92672>.</span>categories()
+    <span style=color:#66d9ef>for</span> word <span style=color:#f92672>in</span> brown<span style=color:#f92672>.</span>words(categories<span style=color:#f92672>=</span>categ)
+)
+
+categs <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;news&#39;</span>, <span style=color:#e6db74>&#39;hobbies&#39;</span>, <span style=color:#e6db74>&#39;humor&#39;</span>, <span style=color:#e6db74>&#39;romance&#39;</span>]
+words <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;can&#39;</span>, <span style=color:#e6db74>&#39;could&#39;</span>, <span style=color:#e6db74>&#39;must&#39;</span>, <span style=color:#e6db74>&#39;will&#39;</span>, <span style=color:#e6db74>&#39;may&#39;</span>]
+cfd<span style=color:#f92672>.</span>tabulate(conditions<span style=color:#f92672>=</span>categs, samples<span style=color:#f92672>=</span>words)
+
+</code></pre></div></li><li><p>路透社语料库：reuters</p><p>路透社语料库包含10788个新闻文档，共计130万字，分成90个主题，按照训练集和测试集分成了两个部分。</p></li><li><p>就职演说语料库：inaugural</p><p>该语料库涵盖了美国每次总统的就职演说。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> nltk
+<span style=color:#75715e># 就职演说语料库</span>
+<span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> inaugural
+
+inaugural<span style=color:#f92672>.</span>fileids()
+[fileid[:<span style=color:#ae81ff>4</span>] <span style=color:#66d9ef>for</span> fileid <span style=color:#f92672>in</span> inaugural<span style=color:#f92672>.</span>fileids()] 
+
+<span style=color:#75715e># 实验： 查询语料库中america和citizen出现的频率，并且绘制成图标。ConditionFreqDIst()</span>
+cdf <span style=color:#f92672>=</span> nltk<span style=color:#f92672>.</span>ConditionalFreqDist(
+    (target, fileid[:<span style=color:#ae81ff>4</span>])
+    <span style=color:#66d9ef>for</span> fileid <span style=color:#f92672>in</span> inaugural<span style=color:#f92672>.</span>fileids()
+    <span style=color:#66d9ef>for</span> w <span style=color:#f92672>in</span> inaugural<span style=color:#f92672>.</span>words(fileid)
+    <span style=color:#66d9ef>for</span> target <span style=color:#f92672>in</span> [<span style=color:#e6db74>&#39;america&#39;</span>, <span style=color:#e6db74>&#39;citizen&#39;</span>]
+    <span style=color:#66d9ef>if</span> w<span style=color:#f92672>.</span>lower()<span style=color:#f92672>.</span>startswith(target)
+)
+<span style=color:#75715e># 绘制图表</span>
+cdf<span style=color:#f92672>.</span>plot()
+</code></pre></div></li></ul><h2 id=23-导入自己的语料库>2.3. 导入自己的语料库</h2><p>新建一个目录如test/，在test/目录下新建文件1.txt，文件内容为Hello world</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> PlaintextReader
+<span style=color:#75715e># 语料库目录</span>
+path <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;/test&#39;</span>
+<span style=color:#75715e># 导入</span>
+myself <span style=color:#f92672>=</span> PlaintextReader(path, <span style=color:#e6db74>&#39;.*&#39;</span>)
+</code></pre></div><h2 id=24-简单的条件频率分布与图表绘制>2.4. 简单的条件频率分布与图表绘制</h2><p>nltk支持生成plot图表，参考如下实例：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># 实验：对比不同语言翻译的同一个文本中，每个词汇的字母个数的不同，并且绘制图表。</span>
+<span style=color:#f92672>from</span> nltk.corpus <span style=color:#f92672>import</span> udhr
+<span style=color:#f92672>import</span> nltk
+languages <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;Chickasaw&#39;</span>, <span style=color:#e6db74>&#39;English&#39;</span>, <span style=color:#e6db74>&#39;German_Deutsch&#39;</span>, <span style=color:#e6db74>&#39;Greenlandic_Inuktikut&#39;</span>, <span style=color:#e6db74>&#39;Hungarian_Magyar&#39;</span>]
+
+cfd <span style=color:#f92672>=</span> nltk<span style=color:#f92672>.</span>ConditionalFreqDist(
+    (lang, len(word))
+    <span style=color:#66d9ef>for</span> lang <span style=color:#f92672>in</span> languages
+    <span style=color:#66d9ef>for</span> word <span style=color:#f92672>in</span> udhr<span style=color:#f92672>.</span>words(lang<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;-Latin1&#39;</span>)
+)
+
+cfd<span style=color:#f92672>.</span>plot()
+</code></pre></div><h1 id=3-原料文本的处理加工>3. 原料文本的处理加工</h1><h2 id=31-网络读取文件处理html>3.1. 网络读取文件处理HTML</h2><ul><li>urllib2 Python3处理URLs的库</li><li>beautifulsoup4<blockquote><p>是一个可以从HTML或XML文件中提取数据的Python库.它能够通过你喜欢的转换器实现惯用的文档导航,查找,修改文档的方式.Beautiful Soup会帮你节省数小时甚至数天的工作时间.</p></blockquote></li></ul><h2 id=32-对搜索引擎与rss订阅的处理>3.2. 对搜索引擎与RSS订阅的处理</h2><ul><li><a href=https://feedparser.readthedocs.io/en/latest/>Universal Feed Parser</a></li><li>beautifulsoup4</li></ul><h2 id=33-后续内容施工中>3.3. 后续内容施工中&mldr;</h2></article></section><article class="ui segment utterances-comments" data-html2canvas-ignore><script src=https://utteranc.es/client.js repo=JohnsonYan/blogdiscuss issue-term=og:title theme=github-light crossorigin=anonymous async></script></article></div></div><footer class="ui basic center aligned segment" style=background-color:initial><p>© 2021 Frank 的博客</p><p>Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> with theme <a href=https://github.com/g1eny0ung/hugo-theme-dream target=_blank>Dream</a>.</p></footer></div></section><section class=back><div class=dream-max-width><header class="ui basic very padded segment dream-header"><div class="ui small circular image"><img src=/images/avator-hacker.png alt=avatar></div><div class=content><h1 class="ui medium header">Frank 的博客<div class="sub header">生与理想， 死于欲望。</div></h1><article class="ui horizontal list"><a class=item href=/posts><i class="archive icon" title=归档></i></a>
+<a class=item href=/categories><i class="th list icon" title=所有分类></i></a>
+<a class=item href=/tags><i class="tags icon" title=所有标签></i></a></article><article class=dream-tags><a class="ui label" href=/tags/ctf/ title=ctf>ctf</a>
+<a class="ui label" href=/tags/go/ title=Go>Go</a>
+<a class="ui label" href=/tags/nlp/ title=NLP>NLP</a>
+<a class="ui label" href=/tags/python/ title=Python>Python</a>
+<a class="ui label" href=/tags/%E7%BC%96%E7%A8%8B/ title=编程>编程</a></article></div></header><div class="ui relaxed grid dream-grid dream-back"><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment markdown-body"><div class="ui medium header">About Me</div></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment"><div class="ui medium header">社交链接</div><nav class="ui secondary menu dream-menu dream-socials"><div class=item><a href=/index.xml><i class="large rss square icon" title=RSS></i></a></div></nav></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"></div></div></div></section></div></div><script>window.defaultDark=null,window.backgroundDark=null,window.backgroundImageDark=null,window.darkNav=null,window.hasTwitterEmbed=null,window.hasTwitterEmbed&&(window.twttr=function(c,d,e){var b,f=c.getElementsByTagName(d)[0],a=window.twttr||{};return c.getElementById(e)?a:(b=c.createElement(d),b.id=e,b.src='https://platform.twitter.com/widgets.js',f.parentNode.insertBefore(b,f),a._e=[],a.ready=function(b){a._e.push(b)},a)}(document,'script','twitter-wjs'))</script><script src=/js/jquery.min.js></script><script src=/js/semantic.min.js></script><script src=/js/jquery.overlayScrollbars.min.js></script><script src=/js/header.js></script><script src=/js/main.js></script><script src=/js/theme.js></script><script src=/js/html2canvas.min.js></script><script src=/js/post.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/ocaml.min.js></script><script>hljs.initHighlightingOnLoad(),setHighlightTheme();function setHighlightTheme(){var a=localStore.getItem('hugo-theme-dream-is-dark'),b,c,d;a=a?a:window.defaultDark?'y':a,b="gruvbox-light",c="gruvbox-dark",d=a==='y'?c:b,$('link[data-highlight]').attr('href','https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/'+d+'.min.css'),$('pre').css('background',a==='y'?'#333':'')}</script><div class="ui inverted segment" id=dream-search><div class="ui search"><div class="ui transparent input"><input class=prompt type=text placeholder=搜索></div><div class=results></div></div></div><script>$(document).ready(function(){$.getJSON('https://johnsonyan.github.io/index.json',function(a){$('.ui.search').search({source:a,searchFields:['title'],showNoResults:!0})})})</script><script src=/js/search.js></script></body></html>
