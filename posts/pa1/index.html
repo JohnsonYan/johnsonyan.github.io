@@ -1,0 +1,139 @@
+<!doctype html><html lang=zh-hans><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><title>PA1笔记 | Frank 的博客</title><link href=/images/avator-hacker.png rel="shortcut icon" type=image/x-icon><meta name=author content="Frank"><meta name=description content="南大2020年ICS实验，PA1实验笔记。
+"><meta name=generator content="Hugo 0.84.0"><link rel=canonical href=https://johnsonyan.github.io/posts/pa1/><meta property="og:title" content="PA1笔记"><meta property="og:description" content="南大2020年ICS实验，PA1实验笔记。"><meta property="og:type" content="article"><meta property="og:url" content="https://johnsonyan.github.io/posts/pa1/"><meta property="og:image" content="https://johnsonyan.github.io"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-06-21T10:25:45+08:00"><meta property="article:modified_time" content="2021-06-21T10:25:45+08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://johnsonyan.github.io"><meta name=twitter:title content="PA1笔记"><meta name=twitter:description content="南大2020年ICS实验，PA1实验笔记。"><link rel=stylesheet href=/css/semantic.min.css><link rel=stylesheet href=/css/icomoon.css><link rel=stylesheet href=/css/OverlayScrollbars.min.css><link rel=stylesheet href=/css/github-markdown.css><link rel=stylesheet href=/css/site.css><style>a:not(.ui.button):hover{text-decoration:underline}a:not(.ui.button){color:#2e8b57!important}body.default{background-color:#fff}</style><link rel=stylesheet data-highlight href=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/gruvbox-light.min.css><link rel=stylesheet href=/css/custom.css></head><body class=default><nav class="ui secondary menu dream-menu"><div class=item><i class="large link bullseye icon dream-flip-toggle" title=翻转！></i></div><div class=item><i class="large link home icon" title=首页 onclick="window.location.href='https://johnsonyan.github.io'"></i></div><div class=item><i class="large link search icon" onclick=toggleSearch()></i></div></nav><div class=flip-container><div class=flipper><section class=front><div class=dream-max-width><div class="ui relaxed grid dream-grid dream-grid-single"><aside class="sixteen wide mobile sixteen wide tablet four wide computer column dream-single-aside"><div class="ui segment actions"><button class="ui circular icon button save-as-image" title=保存为图片 onclick=savePostAsImg()>
+<i class="save icon"></i></button>
+<a href="https://twitter.com/intent/tweet?text=PA1%e7%ac%94%e8%ae%b0&url=https%3a%2f%2fjohnsonyan.github.io%2fposts%2fpa1%2f" class="ui circular twitter icon button"><i class="twitter icon"></i></a>
+<a href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fjohnsonyan.github.io%2fposts%2fpa1%2f" class="ui circular facebook icon button"><i class="facebook icon"></i></a></div></aside><div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single" id=dream-save-post-as-img><section class="ui attached segment"><header><h1 class="ui large header">PA1笔记<div class="sub header">@
+Frank
+|
+星期一，六月 21 日，2021 年
+| 9 分钟阅读
+| 更新于
+星期一，六月 21 日，2021 年</div></h1></header><article class=main><p>南大2020年ICS实验，PA1实验笔记。</p><h1 id=1-指令集架构选择isa>1. 指令集架构选择(ISA)</h1><p>我准备选择riscv32(64)架构，主要有以下原因：</p><ul><li>信创工作的开展， 基于arm架构的国产CPU较多，以后有较多的应用场景；</li><li>智能终端、安卓等都是基于arm架构，也是考虑到了以后的工作；</li><li>想领略优雅的ISA设计；</li></ul><p>至于选择riscv32还是riscv64，我准备先选择riscv32实现，后续在二刷的时候选择riscv64实现。</p><h1 id=2-思考题-究竟要执行多久>2. 思考题： 究竟要执行多久?</h1><p>在cmd_c()函数中, 调用cpu_exec()的时候传入了参数-1, 你知道这是什么意思吗?</p><p>通过代码可知，<code>-1 --</code>，会一直为负数，永远不会大于0，循环将一直执行下去。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>for</span> (; n <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>; n <span style=color:#f92672>--</span>) {
+    vaddr_t this_pc <span style=color:#f92672>=</span> cpu.pc;
+......
+}
+</code></pre></div><h1 id=3-vimctagscscope-linux源码阅读三大利器>3. vim+ctags+cscope Linux源码阅读三大利器</h1><p>参考这篇文章 <a href=https://www.jianshu.com/p/09e74b05fd5d>Linux 平台下阅读源码的工具</a> 安装、配置ctags和cscope</p><p>注意事项：</p><ol><li>我在nemu/目录下执行<code>ctags -R</code>初始化完毕后，在使用中我总是遇到找不到ctags文件的问题，经过排查，将 ~/.vimrc中的<code>set autochdir</code>选项注释掉即可。该选项自动切换当前目录，导致ctags从当前目录找ctags，因此找不到。</li><li>在使用cscope中学习到了vim不同文件buffer之间切换的方法：<ul><li><code>:bn</code> 切换到下一个文件</li><li><code>:bp</code> 切换到上一个文件</li><li><code>:ls</code> 打印文件buffer的列表，带编号</li><li><code>:b [N]</code> 切换到第N个文件，例如 :b 3 命令切换到第3个文件。文件编号可以用 ls 命令查看</li><li><code>:b {bufname}</code> 通过文件名切换到 bufname 对应的文件，输入文件名时，可以用Tab键补全。</li><li><code>:bd</code> 关闭当前文件buffer，而不退出vim程序</li></ul></li></ol><h1 id=4-git-commit-格式>4. git commit 格式</h1><p>看sqlmap源码时看到commit很有规律，这里也参考一下：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git commit -m <span style=color:#e6db74>&#34;type: descriptions&#34;</span>
+</code></pre></div><p>type 有以下种类：</p><ul><li>feat：新功能（feature）</li><li>fix：修补bug</li><li>docs：文档（documentation）</li><li>style： 格式（不影响代码运行的变动）</li><li>refactor：重构（即不是新增功能，也不是修改bug的代码变动）</li><li>test：增加测试</li><li>chore：构建过程或辅助工具的变动</li></ul><h1 id=5-pa1-表达式求值实现思路>5. PA1 表达式求值实现思路</h1><p>记录一下表达式求值的实现思路，便于后续复习，这里涉及了字符串处理、BNF、自动化测试等多个方面，是我之前没有接触过的知识。</p><p>首先通过gdb查询一下p命令的具体用法，在<code>nemu/src/monitor/debug/ui.c</code>中增加一个入口函数cmd_p，这个函数调用<code>expr</code>函数来对表达式进行求值并打印。</p><p>接下来进入<code>nemu/src/monitor/debug/expr.c</code>文件中进行表达式求值函数主体功能的编辑。</p><p>这段enum的主要作用是为token类型取个有助于理解的名字，而对于<code>+</code>这种单个字符可以表示的，靠该符号本身对应的ASCII值就可以直接使用了而且也便于理解。为什么从256开始，主要也是为了不与255以内的ASCII字符冲突。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>enum</span> {
+  <span style=color:#75715e>//TK_NOTYPE = 256, TK_DEC, &#39;(&#39;, &#39;)&#39;, &#39;*&#39;, &#39;/&#39;, &#39;+&#39;, &#39;-&#39;, TK_EQ,
+</span><span style=color:#75715e></span>  TK_NOTYPE <span style=color:#f92672>=</span> <span style=color:#ae81ff>256</span>, 
+  TK_EQ, 
+  TK_DEC, 
+  TK_MINUS, 
+  TK_DEREF,
+  TK_REG,
+  TK_HEX,
+  TK_NEQ,
+  TK_AND,
+
+  <span style=color:#75715e>/* TODO: Add more token types */</span>
+
+};
+</code></pre></div><p>这段我在之前的基础上增加了优先级字段<code>priority</code>，方便后续处理，数字越小，优先级越高，数字越大，优先级越低。优先级数字的定义参考了<a href=http://c.biancheng.net/cpp/html/462.html>C语言运算符的优先级</a>。</p><p>接下来就要为运算符编写正则表达式了，正则表达式多测试，需要慢慢调整。</p><p>注释中提醒我们注意不同规则的优先级，这里最开始不是很明白，但写到后面的时候清楚了，这里的优先级指的是匹配规则在数组中的前后顺序，在相同优先级规则匹配时，同级优先级靠前的规则放到前面。比如十进制和十六进制，我就把十六进制放在前面，十进制放在后面，这样遇到0x123这种数字，就会正确识别为十六进制的0x123，而不是十进制的123。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>struct</span> rule {
+  <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>regex;
+  <span style=color:#66d9ef>int</span> token_type;
+  <span style=color:#66d9ef>int</span> priority;
+} rules[] <span style=color:#f92672>=</span> {
+
+  <span style=color:#75715e>/* TODO: Add more rules.
+</span><span style=color:#75715e>   * Pay attention to the precedence level of different rules.
+</span><span style=color:#75715e>   */</span>
+
+  {<span style=color:#e6db74>&#34; +&#34;</span>, TK_NOTYPE, <span style=color:#ae81ff>0</span>},    <span style=color:#75715e>// spaces
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;0[xX][0-9a-fA-F]+&#34;</span>, TK_HEX, <span style=color:#ae81ff>0</span>},   <span style=color:#75715e>// hex number
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;[0-9]+&#34;</span>, TK_DEC, <span style=color:#ae81ff>0</span>},   <span style=color:#75715e>// dec number
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>$0|&#34;</span>
+    <span style=color:#e6db74>&#34;ra|&#34;</span>
+    <span style=color:#e6db74>&#34;[sgt]p|&#34;</span>
+    <span style=color:#e6db74>&#34;t[0-6]|&#34;</span>
+    <span style=color:#e6db74>&#34;s(:?[0-9]|1[0-1])|&#34;</span>
+    <span style=color:#e6db74>&#34;a[0-7]&#34;</span>
+    , TK_REG, <span style=color:#ae81ff>0</span>},   <span style=color:#75715e>// register $ or x0~x31
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>(&#34;</span>, <span style=color:#e6db74>&#39;(&#39;</span>, <span style=color:#ae81ff>1</span>},       <span style=color:#75715e>// left parenthesis
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>)&#34;</span>, <span style=color:#e6db74>&#39;)&#39;</span>, <span style=color:#ae81ff>1</span>},       <span style=color:#75715e>// right parenthesis
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>*&#34;</span>, <span style=color:#e6db74>&#39;*&#39;</span>, <span style=color:#ae81ff>3</span>},      <span style=color:#75715e>// mul
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;/&#34;</span>, <span style=color:#e6db74>&#39;/&#39;</span>, <span style=color:#ae81ff>3</span>},        <span style=color:#75715e>// div
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>+&#34;</span>, <span style=color:#e6db74>&#39;+&#39;</span>, <span style=color:#ae81ff>4</span>},      <span style=color:#75715e>// plus
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;-&#34;</span>, <span style=color:#e6db74>&#39;-&#39;</span>, <span style=color:#ae81ff>4</span>},        <span style=color:#75715e>// sub
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;==&#34;</span>, TK_EQ, <span style=color:#ae81ff>7</span>},        <span style=color:#75715e>// equal
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;!=&#34;</span>, TK_NEQ, <span style=color:#ae81ff>7</span>},        <span style=color:#75715e>// not equal
+</span><span style=color:#75715e></span>  {<span style=color:#e6db74>&#34;&amp;&amp;&#34;</span>, TK_AND, <span style=color:#ae81ff>7</span>},        <span style=color:#75715e>// and
+</span><span style=color:#75715e></span>};
+</code></pre></div><p><code>make_token</code>函数，识别token并放到token数组中的这段代码，遇到的坑还挺多的。我最开始每一个token都写了一大段赋值的语句，到后面发现即使某运算符不需要对str赋值，也可以统一赋值而不使用，从而达到下面这样简短的效果。</p><p>另一个遇到的问题，是自己C语言经验的问题，strncpy没有自动加结束符，导致最开始我匹配到的字符串总是不准确。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>        <span style=color:#75715e>/* TODO: Now a new token is recognized with rules[i]. Add codes
+</span><span style=color:#75715e>         * to record the token in the array `tokens&#39;. For certain types
+</span><span style=color:#75715e>         * of tokens, some extra actions should be performed.
+</span><span style=color:#75715e>         */</span>
+
+        <span style=color:#66d9ef>switch</span> (rules[i].token_type) {
+          <span style=color:#66d9ef>case</span> TK_NOTYPE:
+            <span style=color:#66d9ef>break</span>;
+          <span style=color:#66d9ef>default</span><span style=color:#f92672>:</span> 
+            tokens[nr_token].type <span style=color:#f92672>=</span> rules[i].token_type;
+            tokens[nr_token].priority <span style=color:#f92672>=</span> rules[i].priority;
+            strncpy(tokens[nr_token].str, substr_start, substr_len);
+            tokens[nr_token].str[substr_len] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;\0&#39;</span>;
+            nr_token<span style=color:#f92672>++</span>;
+        }
+</code></pre></div><p>接下来就是表达式求值的主要运算函数<code>eval</code>了，讲义里的框架代码讲的很清晰，一个优雅的递归函数。细节随着代码编写过程中，自己逐渐理解了。实现下来有以下几点重点和难点：</p><ol><li>实现括号检查功能，主要思路就是遇到左括号+1，右括号-1，通过判断最终值是否为0来判断括号左右匹配度，同时，需要注意一些细节的特殊处理，基本把讲义上举得例子都测试通过就算编写完成了。这里也体会到了讲义说的，不要怕代码有问题，先写出主体框架，实现主要功能，然后再优化，细化，调优。</li><li>实现寻找主运算符功能，主运算符的判断方法讲义也给出来了，就是遍历，然后保留优先级最低的。过程中也有细节需要考虑，如括号的处理等。</li><li>p==q时返回值，值有几种不同的情况，我们要根据具体情况返回，如十进制、十六进制、寄存器取值等。</li><li>最后一步就是对不同运算符进行处理了，这里就是我们代码理解了输入字符串的语义，利用C语言的运算进行计算即可。</li></ol><p>最后，在监视点讲义前半部分，要求我们实现取值和负号运算符，这两个运算符，只需要在执行eval前遍历一遍之前识别出来的运算符，根据这两个运算符的特点找到他们，修改他们的type和优先级即可。</p><h1 id=6-pa1-检查点实现思路>6. PA1 检查点实现思路</h1><p>检查点这个功能刚接触的时候一脸茫然，然后通过gdb了解了检查点的功能并进行了上手测试。观察到输出后，对各列的内容有些不熟悉，查找help信息与man手册没有这一部分的详细输出，便进入gdb官网下载完整手册查看，手册中给出了详细的解释，参考手册说明对检查点进行了实现。</p><p>检查点实现过程主要有几个重点：</p><ol><li>检查点的实现包含了三个命令，一个设置检查点w，一个查看检查点信息，一个删除检查点，这三个功能分别对应了链表的新增，遍历与删除。</li><li>链表的新增与删除，并非传统意义上的单链表新增与删除，这里使用到了链表池的概念，整个过程中我们无需新建链表节点，要考虑的是需要将一个链表的节点移动到另一个链表上，链表池节点的总数不变。</li><li>链表节点需要新增两个字段，一个是记录表达式的字段，一个是记录当前值的字段，设置检查点时记录表达式并即使表达式的值，后续在cpu运行时，每执行一条指令，检查一遍各节点表达式得出的值是否较之前有变化。</li></ol><h1 id=7-必答题>7. 必答题</h1><ul><li><p>送分题 我选择的ISA是<strong>RISCV32</strong></p></li><li><p>程序是个状态机 画出计算1+2+&mldr;+100的程序的状态机</p><pre><code>(PC, r1, r2)
+(0, x, x) -&gt; (1, 0, x) -&gt; (2, 0, 0) -&gt; (3, 0, 1) -&gt; (4, 1, 1) -&gt; 
+(2, 1, 1) -&gt; (3, 1, 2) -&gt; (4, 3, 2) -&gt; 
+(2, 3, 3) -&gt; (3, 3, 3) -&gt; (4, 6, 3) -&gt; 
+(2, 6, 3) -&gt; (3, 6, 4) -&gt; (4, 10, 4) -&gt;
+...
+(2, 4851, 98) -&gt; (3, 4851, 99) -&gt; (4, 4950, 99) -&gt;
+(2, 4950, 99) -&gt; (3, 4950, 100) -&gt; (4, 5050, 100) -&gt;
+(5, 5050, 100) -&gt; (5, 5050, 100) -&gt;
+...
+
+感悟：做这道题之前并没有理解这道题的目标，做完后后明白了，手写状态机时，我们的思维其实就是计算机的思维，精彩，第一次如此清楚的理解了计算机计算思想。
+</code></pre></li><li><p>理解基础设施 我们通过一些简单的计算来体会简易调试器的作用. 首先作以下假设:</p><ul><li>假设你需要编译500次NEMU才能完成PA.</li><li>假设这500次编译当中, 有90%的次数是用于调试.</li><li>假设你没有实现简易调试器, 只能通过GDB对运行在NEMU上的客户程序进行调试. 在每一次调试中, 由于GDB不能直接观测客户程序, 你需要花费30秒的时间来从GDB中获取并分析一个信息.</li><li>假设你需要获取并分析20个信息才能排除一个bug.</li></ul><p>那么这个学期下来, 你将会在调试上花费多少时间?</p><p>答： 500 x 0.9 x 30 x 20 = 270000 秒 = 75 小时</p><p>由于简易调试器可以直接观测客户程序, 假设通过简易调试器只需要花费10秒的时间从中获取并分析相同的信息. 那么这个学期下来, 简易调试器可以帮助你节省多少调试的时间?</p><p>答： 500 x 0.9 x 10 x 20 = 90000秒 = 25 小时</p><p>事实上, 这些数字也许还是有点乐观, 例如就算使用GDB来直接调试客户程序, 这些数字假设你能通过10分钟的时间排除一个bug. 如果实际上你需要在调试过程中获取并分析更多的信息, 简易调试器这一基础设施能带来的好处就更大.</p></li><li><p>RTFM 理解了科学查阅手册的方法之后, 请你尝试在你选择的ISA手册中查阅以下问题所在的位置, 把需要阅读的范围写到你的实验报告里面:</p><ul><li>x86<ul><li>EFLAGS寄存器中的CF位是什么意思?</li><li>ModR/M字节是什么?</li><li>mov指令的具体格式是怎么样的?</li></ul></li><li>mips32<ul><li>mips32有哪几种指令格式?</li><li>CP0寄存器是什么?</li><li>若除法指令的除数为0, 结果会怎样?</li></ul></li><li>riscv32<ul><li><p>riscv32有哪几种指令格式?</p><p>答：The RISC-V Instruction Set Manual Volume I: Unprivileged &#187; 2.2 Base Instruction Formats</p></li><li><p>LUI指令的行为是什么?</p><p>答：The RISC-V Instruction Set Manual Volume I: Unprivileged &#187; 2.4 Integer Computational Instructions &#187; Integer Register-Immediate Instructions &#187; Page 19</p></li><li><p>mstatus寄存器的结构是怎么样的?</p><p>答：The RISC-V Instruction Set Manual Volume II: Privileged Architecture &#187; 3.1.6 Machine Status Register (mstatus)</p></li></ul></li></ul></li><li><p>shell命令 完成PA1的内容之后, nemu/目录下的所有.c和.h和文件总共有多少行代码? 你是使用什么命令得到这个结果的? 和框架代码相比, 你在PA1中编写了多少行代码? (Hint: 目前pa0分支中记录的正好是做PA1之前的状态, 思考一下应该如何回到"过去"?) 你可以把这条命令写入Makefile中, 随着实验进度的推进, 你可以很方便地统计工程的代码行数, 例如敲入make count就会自动运行统计代码行数的命令. 再来个难一点的, 除去空行之外, nemu/目录下的所有.c和.h文件总共有多少行代码?</p><p>答：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>查看代码行数，包括空行
+$ find . -name <span style=color:#e6db74>&#34;*.c&#34;</span> -or -name <span style=color:#e6db74>&#34;*.h&#34;</span> | xargs cat | wc -l
+<span style=color:#ae81ff>6280</span>
+$ git checkout pa0
+$ find . -name <span style=color:#e6db74>&#34;*.c&#34;</span> -or -name <span style=color:#e6db74>&#34;*.h&#34;</span> | xargs cat | wc -l
+<span style=color:#ae81ff>5155</span>
+
+查看代码行数，去除空行
+$ git checkout pa1
+$ find . -name <span style=color:#e6db74>&#34;*.c&#34;</span> -or -name <span style=color:#e6db74>&#34;*.h&#34;</span> | xargs grep -Ev <span style=color:#e6db74>&#34;^</span>$<span style=color:#e6db74>&#34;</span> | wc -l
+<span style=color:#ae81ff>5216</span>
+$ git checkout pa0
+Switched to branch <span style=color:#e6db74>&#39;pa0&#39;</span>
+$ find . -name <span style=color:#e6db74>&#34;*.c&#34;</span> -or -name <span style=color:#e6db74>&#34;*.h&#34;</span> | xargs grep -Ev <span style=color:#e6db74>&#34;^</span>$<span style=color:#e6db74>&#34;</span> | wc -l
+<span style=color:#ae81ff>4213</span>
+$ git checkout pa1
+</code></pre></div><p>可以看到，pa1增加了<code>5216 - 4213 = 1003</code>行代码。</p><p>通过Makefile统计新增代码行数：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff>diff --git a/nemu/Makefile b/nemu/Makefile
+index fc307b5..3a9c220 100644
+<span style=color:#f92672>--- a/nemu/Makefile
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/nemu/Makefile
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -83,9 +83,13 @@ $(OBJ_DIR)/%.o: src/%.c
+</span><span style=color:#75715e></span># Depencies
+<span style=color:#f92672>-include $(OBJS:.o=.d)
+</span><span style=color:#f92672></span>
+<span style=color:#a6e22e>+# Code Count
+</span><span style=color:#a6e22e>+COUNT_L := $(shell  find . -name &#34;*.h&#34; -or -name &#34;*.c&#34; | xargs grep -Ev &#34;^$$&#34; | wc -l)
+</span><span style=color:#a6e22e>+COUNT_ADD := $(shell expr $(COUNT_L) - 4213)
+</span><span style=color:#a6e22e>+
+</span><span style=color:#a6e22e></span># Some convenient rules
+
+<span style=color:#f92672>-.PHONY: app run gdb clean run-env $(DIFF_REF_SO)
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+.PHONY: app run gdb clean run-env $(DIFF_REF_SO) count
+</span><span style=color:#a6e22e></span>app: $(BINARY)
+
+override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
+<span style=color:#75715e>@@ -118,3 +122,7 @@ clean:
+</span><span style=color:#75715e></span>        $(MAKE) -C tools/gen-expr clean
+        $(MAKE) -C tools/qemu-diff clean
+        $(MAKE) -C tools/kvm-diff clean
+<span style=color:#a6e22e>+
+</span><span style=color:#a6e22e>+count:
+</span><span style=color:#a6e22e>+       @echo $(COUNT_L) lines in nemu
+</span><span style=color:#a6e22e>+       @echo $(COUNT_ADD) lines added into the frame code
+</span><span style=color:#a6e22e></span>
+</code></pre></div></li><li><p>RTFM 打开工程目录下的Makefile文件, 你会在CFLAGS变量中看到gcc的一些编译选项. 请解释gcc中的-Wall和-Werror有什么作用? 为什么要使用-Wall和-Werror?</p><p>答： -Wall，打开gcc的所有警告。-Werror，它要求gcc将所有的警告当成错误进行处理。可以帮助我们写出更好的代码，在程序早期发现错误。</p></li></ul></article></section><article class="ui segment utterances-comments" data-html2canvas-ignore><script src=https://utteranc.es/client.js repo=JohnsonYan/blogdiscuss issue-term=og:title theme=github-light crossorigin=anonymous async></script></article></div></div><footer class="ui basic center aligned segment" style=background-color:transparent><p>© 2021 Frank 的博客</p><p>Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> with theme <a href=https://github.com/g1eny0ung/hugo-theme-dream target=_blank>Dream</a>.</p></footer></div></section><section class=back><div class=dream-max-width><header class="ui basic very padded segment dream-header"><div class="ui small circular image"><img src=/images/avator-hacker.png alt=avatar></div><div class=content><h1 class="ui medium header">Frank 的博客<div class="sub header">生与理想， 死于欲望。</div></h1><article class="ui horizontal list"><a class=item href=/posts><i class="archive icon" title=归档></i></a>
+<a class=item href=/categories><i class="th list icon" title=所有分类></i></a>
+<a class=item href=/tags><i class="tags icon" title=所有标签></i></a></article><article class=dream-tags><a class="ui label" href=/tags/c/ title=C>C</a>
+<a class="ui label" href=/tags/ctf/ title=ctf>ctf</a>
+<a class="ui label" href=/tags/go/ title=Go>Go</a>
+<a class="ui label" href=/tags/nlp/ title=NLP>NLP</a>
+<a class="ui label" href=/tags/python/ title=Python>Python</a>
+<a class="ui label" href=/tags/%E7%BC%96%E7%A8%8B/ title=编程>编程</a></article></div></header><div class="ui relaxed grid dream-grid dream-back"><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment markdown-body"><div class="ui medium header">About Me</div></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"><article class="ui segment"><div class="ui medium header">社交链接</div><nav class="ui secondary menu dream-menu dream-socials"><div class=item><a href=/index.xml><i class="large rss square icon" title=RSS></i></a></div></nav></article></div><div class="sixteen wide mobile eight wide tablet four wide computer column dream-column"></div></div></div></section></div></div><script>window.defaultDark=null,window.backgroundDark=null,window.backgroundImageDark=null,window.darkNav=null,window.hasTwitterEmbed=null,window.hasTwitterEmbed&&(window.twttr=function(c,d,e){var b,f=c.getElementsByTagName(d)[0],a=window.twttr||{};return c.getElementById(e)?a:(b=c.createElement(d),b.id=e,b.src='https://platform.twitter.com/widgets.js',f.parentNode.insertBefore(b,f),a._e=[],a.ready=function(b){a._e.push(b)},a)}(document,'script','twitter-wjs'))</script><script src=/js/jquery.min.js></script><script src=/js/semantic.min.js></script><script src=/js/jquery.overlayScrollbars.min.js></script><script src=/js/header.js></script><script src=/js/main.js></script><script src=/js/theme.js></script><script src=/js/html2canvas.min.js></script><script src=/js/post.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js></script><script src=https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/ocaml.min.js></script><script>hljs.initHighlightingOnLoad(),setHighlightTheme();function setHighlightTheme(){var a=localStore.getItem('hugo-theme-dream-is-dark'),b,c,d;a=a?a:window.defaultDark?'y':a,b="gruvbox-light",c="gruvbox-dark",d=a==='y'?c:b,$('link[data-highlight]').attr('href','https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/'+d+'.min.css'),$('pre').css('background',a==='y'?'#333':'')}</script><div class="ui inverted segment" id=dream-search><div class="ui search"><div class="ui transparent input"><input class=prompt type=text placeholder=搜索></div><div class=results></div></div></div><script>$(document).ready(function(){$.getJSON('https://johnsonyan.github.io/index.json',function(a){$('.ui.search').search({source:a,searchFields:['title'],showNoResults:!0})})})</script><script src=/js/search.js></script></body></html>
